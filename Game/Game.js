@@ -1,17 +1,17 @@
 var ticTacToe = function() {
 	this.board = [['#', '#', '#'], ['#', '#', '#'], ['#', '#', '#']];
+  this.player = 'player1';
 };
 
 ticTacToe.prototype.drawBoard = function() {
-	let boardCopy = JSON.parse(JSON.striginfy(this.board));
-	boardCopy.forEach( (row) => {
-		row.join('|');
+	let boardCopy = JSON.parse(JSON.stringify(this.board));
+	boardCopy.forEach( (row, i) => {
+		boardCopy[i] = row.join('|');
 	})
-  boardCopy.join('\n');
-  return boardCopy;
+  return boardCopy.join('\n');
 }
 
-ticTacToe.prototype.ChangePosition = function(row, col, player) {
+ticTacToe.prototype.changePosition = function(row, col, player) {
   var piece;
   if (player === 'player1') {
     piece = 'X';
@@ -23,7 +23,7 @@ ticTacToe.prototype.ChangePosition = function(row, col, player) {
   }
 }
 
-ticTacTow.prototype.gameOver = function() {
+ticTacToe.prototype.gameOver = function() {
   var winner;
   board = this.board;
   board.forEach( row => {
@@ -54,3 +54,25 @@ ticTacTow.prototype.gameOver = function() {
   return winner;
 }
 
+ticTacToe.prototype.reset = function() {
+  this.board = [['#', '#', '#'], ['#', '#', '#'], ['#', '#', '#']];
+  this.player = 'player1';
+}
+
+ticTacToe.prototype.move = function(row, col) {
+  //get the current player to chase a space;
+  this.changePosition(1, 1, this.player);
+  if (this.player === 'player1') {
+    this.player = 'player2';
+  } else if (this.player === 'player2') {
+    this.player = 'player1';
+  }
+  var winner = this.gameOver;
+  if (winner) {
+    this.reset;
+    return winner + 'is the winner! \n' + this.drawBoard;
+  }
+  return this.player + '\'s turn. \n' + this.drawBoard;
+}
+
+module.exports = ticTacToe;
